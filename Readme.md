@@ -31,21 +31,21 @@ Monica
 ### Programs
 
 - [X] See all programs
-- [ ] See active programs
+- [X] See active programs
 - [x] See programs by status
-- [ ] See programs by year
+- [X] See programs by year
 
 ### Employee
 
-- [ ] Select All employee
-- [ ] Select Avtive employee
-- [ ] Select not active employee
-- [ ] Select employee by year
+- [X] Select All employee
+- [X] Select Avtive employee
+- [X] Select not active employee
+- [X] Select employee by year
 
 ### Part
 
-- [ ] Select all parts
-- [ ] Select part by comodity
+- [X] Select all parts
+- [X] Select part by comodity
 - [ ] Select part by partStatus
 - [ ] Select Part by comodity and PartStatus
 
