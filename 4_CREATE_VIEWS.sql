@@ -178,5 +178,35 @@ CREATE VIEW INVENTORY_FLOW_STATUS AS
         ON P.PART_ID = I.PART_ID;
 
 
-
+CREATE VIEW CUSTOMER_PROGRAM_EMPLOYEE
+AS
+    SELECT 
+        P.CUSTOMER_ID,
+        P.CUSTOMER_NAME,
+        P.PROGRAM_ID, 
+        P.PROGRAM_NAME,
+        P.PROGRAM_STATUS,
+        P.PROGRAM_START,
+        P.PROGRAM_END,
+        EMP.EMP_ID,
+        EMP.EMP_NAME,
+        EMP.EMP_START_DATE,
+        EMP.EMP_END_DATE,
+        EMP.DESIGNATION
+    FROM PROJECT_BY_CUSTOMER P
+        LEFT JOIN(
+            SELECT 
+                E.EMP_NAME ,
+                EP.DESIGNATION,
+                EP.EMP_PROG_ID, 
+                EP.EMP_ID, 
+                EP.PROG_ID,
+                EP.START_DATE AS EMP_START_DATE,
+                EP.END_DATE AS EMP_END_DATE
+            FROM SCDB.EMPLOYEE_PROGRAM EP 
+                LEFT JOIN SCDB.EMPLOYEE E 
+                ON EP.EMP_ID = E.EMP_ID
+        ) EMP
+        ON P.PROGRAM_ID = EMP.PROG_ID
+        ORDER BY P.CUSTOMER_ID, P.PROGRAM_ID;
 
