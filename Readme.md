@@ -15,8 +15,8 @@ Monica
 - [x] Admin User creation
 - [x] Create Tables
 - [x] Insert test data
-- [x] Queries
-- [ ] Create views
+- [ ] Create Views
+- [ ] Queries
 - [ ] Create reports
 - [ ] Create users with limited access
 - [ ] create test script to verify user control
