@@ -1,0 +1,51 @@
+---
+title: "DMDD_Project_Report"
+author: "Monica and Harshit Raj"
+date: "April 15, 2019"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+Creating Connection of R with Data Source Name
+Data Source Name = MYORCL
+User ID = SCDB
+Password = projpassword
+
+
+```{r}
+#install.packages("RODBC")
+#install.packages("knitr")
+#install.packages("kableExtra")
+
+library(knitr)
+library(kableExtra)
+
+library(RODBC)
+
+SC_Conn <- odbcConnect("MYORCL", 
+                       uid = "SCDB", 
+                       pwd= "projpassword", 
+                       believeNRows=FALSE)
+
+#sqlSave(con, test_table, "TEST_TABLE")
+
+#close(con)
+
+```
+
+
+
+
+```{r}
+
+CUSTOMER <- sqlQuery(SC_Conn, "select * from SCDB.CUSTOMER")
+
+kable(CUSTOMER) %>%
+  kable_styling(bootstrap_options = "striped", full_width = T,font_size = 7)
+
+```
+
