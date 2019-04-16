@@ -141,6 +141,7 @@ CREATE VIEW INVENTORY_FLOW_STATUS AS
         P.PART_ID, 
         P.PART_NAME,  
         P.INVENTORY,
+        P.COMMODITY,
         O.OUT_APW,
         I.IN_APW,
         O.OUT_MPW,
@@ -210,3 +211,61 @@ AS
         ON P.PROGRAM_ID = EMP.PROG_ID
         ORDER BY P.CUSTOMER_ID, P.PROGRAM_ID;
 
+CREATE VIEW CUSTOMER_PROGRAM_PART AS
+SELECT 
+        PC.CUSTOMER_ID,
+        PC.CUSTOMER_NAME,
+        PC.PROGRAM_ID, 
+        PC.PROGRAM_NAME,
+        PROGP.PART_ID,
+        PROGP.PART_NAME,
+        PROGP.COMMODITY,
+        PROGP.OUT_APW,
+        PROGP.IN_APW,
+        PROGP.OUT_MPW,
+        PROGP.IN_MPW
+FROM PROJECT_BY_CUSTOMER PC
+    LEFT JOIN(
+        SELECT 
+            PP.PROG_ID, 
+            P.PART_ID, 
+            P.PART_NAME,
+            P.COMMODITY,
+            P.OUT_APW,
+            P.IN_APW,
+            P.OUT_MPW,
+            P.IN_MPW
+        FROM SCDB.PROGRAM_PART PP
+            LEFT JOIN SCDB.INVENTORY_FLOW_STATUS P
+            ON PP.PART_ID = P.PART_ID) PROGP
+            ON PC.PROGRAM_ID = PROGP.PROG_ID
+            ORDER BY PC.CUSTOMER_ID;
+            
+CREATE VIEW CUSTOMER_PROGRAM_INVOICE
+AS
+SELECT 
+    PC.CUSTOMER_ID, 
+    PC.CUSTOMER_NAME, 
+    PC.PROGRAM_ID, 
+    PC.PROGRAM_NAME,
+    PO.OUT_INV_NO,
+    PO.OUT_INV_DATE,
+    PO.QUANTITY,
+    PO.COST_PER_UNIT,
+    PO.COST_UNIT,
+    PO.TOTAL_COST
+FROM PROJECT_BY_CUSTOMER PC
+    LEFT JOIN (
+        SELECT  
+            PP.PROG_ID,
+            O.OUT_INV_NO,
+            O.OUT_INV_DATE,
+            O.QUANTITY,
+            O.COST_PER_UNIT,
+            O.COST_UNIT,
+            (O.COST_PER_UNIT * O.QUANTITY) AS TOTAL_COST
+        FROM SCDB.PROGRAM_PART PP
+            LEFT JOIN OUTGOING_INVOICE O
+            ON PP.PROG_PART_ID = O.PROG_PART_ID
+    ) PO
+    ON PO.PROG_ID = PC.PROGRAM_ID;
